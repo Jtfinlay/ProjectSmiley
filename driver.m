@@ -1,9 +1,9 @@
 function driver
 
-  pkg install packages/*
+  pkg load image;
 
-  image = imread('smile.png')
+  image = imread('smile.png');
 
-  pre_processing(image)
+  preprocess(image);
 
 end

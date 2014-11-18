@@ -1,25 +1,13 @@
-Notes from James:
-
 You'll need octave 3.8.1+ to run the included packages. They won't
 work on ohaton, since the server's missing some required libraries
 (well -- something's broken, I dunno).
 
-I had to install octave on my linux server to get this all working. I
-had some issues getting the proper version built, but the following
-helped for my fortran problems:
+Run the the following once, since it will install the packages for
+you:
 
-> sudo apt-get install f2c gfortran libblas-dev liblapack-dev
+> pkg install packages/*
 
-You can get the newest version of octave from:
+You can ensure it is all installed with:
 
-> ftp://ftp.gnu.org/gnu/octave/
+> pkg list
 
-and install with
-
-> ./configure && make && make install
-
-Let me know if there are issues. I can add you guys as users on my
-server so you don't have to set anything up yourselves. It took
-forever to install octave.
-
-Hope this helps!
