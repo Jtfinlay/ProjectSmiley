@@ -1,14 +1,14 @@
 pkg load all
 
 
-function img = new_img(image, manipulation)
-   img = struct('img',image,'mod', manipulation);   
+function img = new_img(image, name)
+   img = struct('img',image,'name', name);   
 return
 end
 
 function print_imgs(images)
 	for j = 1:size(images,2)
-		imwrite(images(j).img, sprintf("./output/%s.png", images(j).mod));
+		imwrite(images(j).img, sprintf("./output/%s.png", images(j).name));
 	end
 return
 end
@@ -21,7 +21,7 @@ function rotated = all_rotations(images)
 	for j = 1:size(images,2)
 	for deg = 0:pi/6:(2*pi - pi/6)
 		R = [cos(deg) sin(deg); -sin(deg) cos(deg)];
-		rotated(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_rot%f",images(j).mod, deg));
+		rotated(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_rot%f",images(j).name, deg));
 	end
 	end
 return
@@ -36,22 +36,22 @@ function flipped = all_flips(images)
 	for j = 1:size(images,2)
 		flipped(index++) = images(j);
 		R = diag([-1, 1, 1]);
-		flipped(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_flip",images(j).mod));
+		flipped(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_flip",images(j).name));
 	end
 return
 end
 
 %input: an array of images.
-%output: an larger array of images with each rotation from 0 to 345 degrees using 15 degree increments 
+%output: an larger array of images with two different skews and the original
 % it may be important to note this set includes the original
 function skewed = all_skews(images)
 	index = 1;
 	for j = 1:size(images,2)
 		R = [cos(0) sin(0.785); -sin(0) cos(0)];
-		skewed(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_Hskew%f",images(j).mod));
+		skewed(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_Hskew%f",images(j).name));
 
 		R = [cos(0) sin(0); -sin(0.785) cos(0)];
-		skewed(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_Vskew%f",images(j).mod));
+		skewed(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_Vskew%f",images(j).name));
 		
 	end
 return
@@ -65,10 +65,10 @@ function streched = all_streches(images)
 		streched(index++) = images(j);
 		
 		R = diag([0.5, 1, 1]);
-		streched(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_skinny",images(j).mod));
+		streched(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_skinny",images(j).name));
 		
 		R = diag([1, 0.5, 1]);
-		streched(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_wide",images(j).mod));
+		streched(index++) = new_img(imperspectivewarp(images(j).img, R, :, "loose", 255), sprintf("%s_wide",images(j).name));
 	end
 return
 end
