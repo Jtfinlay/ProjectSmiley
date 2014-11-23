@@ -1,13 +1,18 @@
-function features = preprocess(image)
+function features = preprocess(image, feature_count)
   % PREPROCESS takes an image and produces a vector with
-  % found features
+  % found features. Takes an expected number of features
+  % as well
 
-  features = struct('width', {},
-		'height', {},
-		'pixels', {},
+  features = struct('width', 0,
+		'height', 0,
+		'pixels', 0,
 		'midpoint', zeros(1,2),
-		'x', {},
-		'y', {});
+		'x', 0,
+		'y', 0);
+
+  % This is stupid, but it's the best way I found to initialize structs
+  % in octave.
+  features(feature_count).x = [];
 
   % 1. Threshold the image
   img = rgb2gray(image);
@@ -15,14 +20,15 @@ function features = preprocess(image)
 
   % 2. Find boundaries
   [B,L] = bwboundaries(img);
+  B(1,:) = [];
 
   % 3. Extract features
-  for k=2:numel(B),
-    [features(k-1).width, features(k-1).height] = calcDim(B{k});
-    features(k-1).x = min(B{k}(:,1));
-    features(k-1).y = min(B{k}(:,2));
-    features(k-1).pixels = calcSize(B{k},L);
-    [features(k-1).midpoint(1), features(k-1).midpoint(2)] = calcMedian(B{k}, L);
+  for k=1:min(numel(B), feature_count),
+    [features(k).width, features(k).height] = calcDim(B{k});
+    features(k).x = min(B{k}(:,1));
+    features(k).y = min(B{k}(:,2));
+    features(k).pixels = calcSize(B{k},L);
+    [features(k).midpoint(1), features(k).midpoint(2)] = calcMedian(B{k}, L);
   endfor
 
 end
@@ -36,8 +42,8 @@ function showImageBounds(img, B)
 end
 
 function [width, height] = calcDim(bounds)
-  width = max(bounds(:,1))-min(bounds(:,1));
-  height = max(bounds(:,2))-min(bounds(:,2));
+  height = max(bounds(:,1))-min(bounds(:,1));
+  width = max(bounds(:,2))-min(bounds(:,2));
 end
 
 function pixels = calcSize(bounds, labels)
@@ -47,8 +53,8 @@ end
 
 function [x,y] = calcMedian(bounds, labels)
   label = labels(bounds(1,1), bounds(1,2));
-  y = findWeightCentre(sum(labels==label));
-  x = findWeightCentre(sum(labels'==label));
+  x = findWeightCentre(sum(labels==label));
+  y = findWeightCentre(sum(labels'==label));
 end
 
 function index = findWeightCentre(array)
