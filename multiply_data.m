@@ -72,10 +72,15 @@ function streched = all_streches(images)
 	end
 return
 end
+
+function transformations = all_transformations(images)
+	transformations = all_streches(all_flips(all_skews(all_rotations(images))));
+return
+end
   
 %http://octave.sourceforge.net/image/function/imperspectivewarp.html
 
 img = imread ("./smile.png");
-images = all_streches(all_flips(all_skews(all_rotations([new_img(img,"orignial")]))));
+images = all_transformations([new_img(img,"orignial")]))));
 print_imgs(images);
 
