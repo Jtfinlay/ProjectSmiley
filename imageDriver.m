@@ -10,13 +10,11 @@ function img = new_image(image, class, name)
 		'name', name);  % the modifications done to the image 
 						% along with its original file name and  
 						% incidences (this is for debugging only)
-return
 end
 
 
 function index = getClassIndex(fileName)
  index =  str2num(regexprep (fileName, '\D+', '$1 '));
-return
 end
 
 %loads all images from each file, then does all transformations to them
@@ -31,14 +29,15 @@ function images = get_all_images()
 	names = {files.name};
 	for i=1:size(names,1)
 		class_index = getClassIndex(names(i){1});
-		orignal_images = splitImages(strcat("Data/", names{i}));
-		for j=1:size(orignal_images,1)
-			for k=1:size(orignal_images,2)
-				images = [ images, all_training_transformations([new_image(orignal_images{j,k}, class_names{class_index}, sprintf("$s_%d_%d", names{i}, j,k))]) ];
+		original_images = splitImages(strcat("Data/", names{i}));
+		for j=1:size(original_images,1)
+			for k=1:size(original_images,2)
+				current_image = new_image(original_images{j,k}, class_names{class_index}, sprintf("$s_%d_%d", names{i}, j,k)); %Create new image
+				transformed_images = all_training_transformations([current_image]);%get a this image and all of its transformations
+				images = [ images, transformed_images];%concat to main list
 			end
 		end
 	end
-	return
 end
 
 

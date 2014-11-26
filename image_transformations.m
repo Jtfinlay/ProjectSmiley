@@ -12,7 +12,6 @@ function rotated = all_rotations(images)
 		rotated(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_rot%f",images(j).name, deg));
 	end
 	end
-return
 end
 
 %input: an array of images.
@@ -26,7 +25,6 @@ function flipped = all_flips(images)
 		R = diag([-1, 1, 1]);
 		flipped(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_flip",images(j).name));
 	end
-return
 end
 
 %input: an array of images.
@@ -42,7 +40,6 @@ function skewed = all_skews(images)
 		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_Vskew%f",images(j).name));
 		
 	end
-return
 end
 
 %input: an array of images.
@@ -58,17 +55,14 @@ function streched = all_stretches(images)
 		R = diag([1, 0.5, 1]);
 		streched(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_wide",images(j).name));
 	end
-return
 end
 
 function transformations = all_training_transformations(images)
 	transformations = all_stretches(all_flips(all_skews(images)));
-return
 end
   
 function transformations = all_testing_transformations(images)
 	transformations = all_training_transformations(all_rotations(images));
-return
 end
 
 
