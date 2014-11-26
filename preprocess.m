@@ -25,8 +25,8 @@ function features = preprocess(image, feature_count)
   % 3. Extract features
   for k=1:min(numel(B), feature_count),
     [features(k).width, features(k).height] = calcDim(B{k});
-    features(k).x = min(B{k}(:,1));
-    features(k).y = min(B{k}(:,2));
+    features(k).y = min(B{k}(:,1));
+    features(k).x = min(B{k}(:,2));
     features(k).pixels = calcSize(B{k},L);
     [features(k).midpoint(1), features(k).midpoint(2)] = calcMedian(B{k}, L);
   endfor
