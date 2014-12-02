@@ -28,8 +28,9 @@ end
 function images = get_all_images(file_id)
 	global class_names;
 	images = [];
-	files = dir(strcat('Data/', file_id, '*.jpg');
+	files = dir(strcat('Data/', file_id, '*.png'));
 	names = {files.name};
+	h = waitbar(0, strcat('Loading data: 0/', num2str(length(names))));
 	for i=1:size(names,1)
 		class_index = getClassIndex(names(i){1});
 		original_images = splitImages(strcat("Data/", names{i}));
@@ -40,7 +41,9 @@ function images = get_all_images(file_id)
 				images = [ images, transformed_images];%concat to main list
 			end
 		end
+		waitbar((i/length(name)),h,strcat('Loading data: ',num2str(i),'/',num2str(length(names))));
 	end
+	close(h);
 end
 
 
@@ -51,6 +54,7 @@ images = get_all_images('Training');
 disp('Loading complete! Extracting features. This will take forever.');
 fflush(stdout);
 
+h = waitbar(0, 'Extracting features');
 fid = fopen('nn_data.csv', 'w');
 for i=1:length(images)
 	features = preprocess(images(i).img, 6);
@@ -77,7 +81,9 @@ for i=1:length(images)
 	endfor
 	line(end+1) = find(ismember(class_names, images(i).class));
 	csvwrite(fid, line);
+	waitbar((i/length(images)), h, strcat('Extracting: ',num2str(100*i/length(images)),'%'));
 end
+close(h);
 fclose(fid);
 
 disp('Preprocessing complete! Input data can be found in nn_data.csv.');
