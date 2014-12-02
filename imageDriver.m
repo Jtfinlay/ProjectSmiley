@@ -25,7 +25,7 @@ function images = get_all_images()
 					'8)', '8-)','8(', '8-(', '8D', '8-D', '8|', '8-|', '8P', '8-P', '8O', '8-O', 
 					';)', ';-)', ';(', ';-(', ';D', ';-D', ';|', ';-|', ';P', ';-P', ';O', ';-O'};
 	images = [];
-	files = dir("Data/*.jpg");
+	files = dir("Data/*.png");
 	names = {files.name};
 	for i=1:size(names,1)
 		class_index = getClassIndex(names(i){1});
