@@ -23,11 +23,12 @@ function features = preprocess(image, feature_count)
 	end
 
 	% 1. Threshold the image
-	img = rgb2gray(image);
-	img = im2bw(img, graythresh(img));
+	% This is now taken care of with pr16
+%	img = rgb2gray(image);
+%	img = im2bw(image, graythresh(image));
 
 	% 2. Find boundaries
-	[B,L] = bwboundaries(img);
+	[B,L] = bwboundaries(image);
 	B(1,:) = [];
 
 	% 3. Extract features
