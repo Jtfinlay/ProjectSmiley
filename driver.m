@@ -35,7 +35,7 @@ function images = get_all_images(file_id)
 		original_images = splitImages(strcat("Data/", names{i}));
 		for j=1:size(original_images,1)
 			for k=1:size(original_images,2)
-				current_image = new_image(original_images{j,k}, class_names{class_index}, sprintf("$s_%d_%d", names{i}, j,k)); %Create new image
+				current_image = new_image(original_images{j,k}, class_names{class_index}, sprintf("%s_%d_%d", names{i}, j,k)); %Create new image
 				transformed_images = all_training_transformations([current_image]);%get a this image and all of its transformations
 				images = [ images, transformed_images];%concat to main list
 			end

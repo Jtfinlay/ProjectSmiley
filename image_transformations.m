@@ -9,7 +9,7 @@ function rotated = all_rotations(images)
 	for j = 1:size(images,2)
 	for deg = 0:pi/6:(2*pi - pi/6)
 		R = [cos(deg) sin(deg); -sin(deg) cos(deg)];
-		rotated(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_rot%f",images(j).name, deg));
+		rotated(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_rot%f",images(j).name, deg));
 	end
 	end
 end
@@ -23,7 +23,7 @@ function flipped = all_flips(images)
 	for j = 1:size(images,2)
 		flipped(index++) = images(j);
 		R = diag([-1, 1, 1]);
-		flipped(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_flip",images(j).name));
+		flipped(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_flip",images(j).name));
 	end
 end
 
@@ -34,10 +34,10 @@ function skewed = all_skews(images)
 	index = 1;
 	for j = 1:size(images,2)
 		R = [cos(0) sin(0.785); -sin(0) cos(0)];
-		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_Hskew%f",images(j).name));
+		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_Hskew",images(j).name));
 
 		R = [cos(0) sin(0); -sin(0.785) cos(0)];
-		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_Vskew%f",images(j).name));
+		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_Vskew",images(j).name));
 		
 	end
 end
@@ -50,10 +50,10 @@ function streched = all_stretches(images)
 		streched(index++) = images(j);
 		
 		R = diag([0.5, 1, 1]);
-		streched(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_skinny",images(j).name));
+		streched(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_skinny",images(j).name));
 		
 		R = diag([1, 0.5, 1]);
-		streched(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images.class, sprintf("%s_wide",images(j).name));
+		streched(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_wide",images(j).name));
 	end
 end
 
@@ -63,6 +63,12 @@ end
   
 function transformations = all_testing_transformations(images)
 	transformations = all_training_transformations(all_rotations(images));
+end
+
+function images = writeAll(images)
+	for i = 1:size(images,2)
+		imwrite(images(i).img, sprintf("./output/%s.jpg", images(i).name));
+	end
 end
 
 
