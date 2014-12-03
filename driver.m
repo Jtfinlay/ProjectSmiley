@@ -29,9 +29,9 @@ function images = get_all_images(file_id)
 	global class_names;
 	images = [];
 	files = dir(strcat('Data/', file_id, '*.png'));
-	names = {files.name};
+	names = {files.name}';
 	for i=1:size(names,1)
-		class_index = getClassIndex(names(i){1});
+		class_index = getClassIndex(names{i});
 		original_images = splitImages(strcat("Data/", names{i}));
 		for j=1:size(original_images,1)
 			for k=1:size(original_images,2)
@@ -45,12 +45,13 @@ end
 
 
 to = time();
-disp('Loading all images. This could several minutes.');
+disp('Loading all images. This could take several minutes.');
 fflush(stdout);
 images = get_all_images('Training');
 disp('Loading complete! Extracting features. This will take forever.');
 fflush(stdout);
 
+pause;
 h = waitbar(0, 'Extracting features');
 fid = fopen('nn_data.csv', 'w');
 for i=1:length(images)
