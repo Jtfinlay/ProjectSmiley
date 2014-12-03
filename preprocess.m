@@ -12,14 +12,23 @@ function features = preprocess(image, feature_count)
 
 	% This is stupid, but it's the best way I found to initialize structs
 	% in octave.
-	features(feature_count).x = [];
+	% NOTE: Please tell me if you find a better way. This is disgusting.
+	for i=1:feature_count,
+		features(i).width = 0;
+		features(i).height = 0;
+		features(i).x = 0;
+		features(i).y = 0;
+		features(i).pixels = 0;
+		features(i).midpoint = [0, 0];
+	end
 
 	% 1. Threshold the image
-	img = rgb2gray(image);
-	img = im2bw(img, graythresh(img));
+	% This is now taken care of with pr16
+%	img = rgb2gray(image);
+%	img = im2bw(image, graythresh(image));
 
 	% 2. Find boundaries
-	[B,L] = bwboundaries(img);
+	[B,L] = bwboundaries(image);
 	B(1,:) = [];
 
 	% 3. Extract features
