@@ -39,6 +39,7 @@ function images = get_all_images(file_id)
 				current_image = new_image(original_images{j,k}, class_names{class_index}, sprintf("%s_%d_%d", names{i}, j,k)); %Create new image
 				transformed_images = all_training_transformations([current_image]);%get a this image and all of its transformations
 				images = [ images, transformed_images];%concat to main list
+%				images = [ images, current_image];
 			end
 		end
 		waitbar((i/size(names,1)), w, strcat('Loading: ', num2str(100*i/size(names,1)),'%'));
@@ -54,8 +55,8 @@ images = get_all_images('Training');
 disp('Loading complete! Extracting features. This will take forever.');
 fflush(stdout);
 
-pause;
 h = waitbar(0, 'Extracting features');
+fflush(stdout);
 fid = fopen('nn_data.csv', 'w');
 for i=1:length(images)
 	features = preprocess(images(i).img, 6);
