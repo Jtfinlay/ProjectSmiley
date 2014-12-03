@@ -33,6 +33,8 @@ end
 function skewed = all_skews(images)
 	index = 1;
 	for j = 1:size(images,2)
+		skewed(index++) = images(j);
+	
 		R = [cos(0) sin(0.785); -sin(0) cos(0)];
 		skewed(index++) = new_image(imperspectivewarp(images(j).img, R, :, "loose", 255), images(j).class, sprintf("%s_Hskew",images(j).name));
 
