@@ -30,6 +30,7 @@ function images = get_all_images(file_id)
 	images = [];
 	files = dir(strcat('Data/', file_id, '*.png'));
 	names = {files.name}';
+	w = waitbar(0, 'Loading images');
 	for i=1:size(names,1)
 		class_index = getClassIndex(names{i});
 		original_images = splitImages(strcat("Data/", names{i}));
@@ -40,7 +41,9 @@ function images = get_all_images(file_id)
 				images = [ images, transformed_images];%concat to main list
 			end
 		end
+		waitbar((i/size(names,1)), w, strcat('Loading: ', num2str(100*i/size(names,1)),'%'));
 	end
+	close(w);
 end
 
 
